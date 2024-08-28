@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+
+                }
+            },
+        }
+    </script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="mx-auto mt-16 text-center">
+        <h1 class="text-4xl font-bold">Event Info</h1>
+        <div id="qrText" class="text-2xl my-6">
+            <h1 >Event Id: {{ model.id }}</h1>
+            <h1>Event Name: {{ model.title }}</h1>
+            <h1>Event desc: {{ model.description }}</h1>
+            <h1>Event organizer: {{ model.organizer }}</h1>
+            <h1>Event Date: {{ model.date }}</h1>
+            <h1>Event time: {{ model.time }}</h1>
+            <h1>Event Category: {{ model.category }}</h1>
+            <h1>Created On: {{ model.created_at }}</h1>
+        </div>
+        <button class="bg-blue-500 text-white p-4 rounded-lg border-2 border-blue-500 hover:bg-transparent hover:text-blue-500 duration-300" onclick="generateQRCode()">Generate QR Code</button>
+        <img class="hidden mx-auto mt-4" id="qrImage" alt="QR Code">
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function generateQRCode() {
+                
+                const textElement = document.getElementById('qrText');
+                if (textElement) {
+                    const text = textElement.innerText;
+
+                    const encodedText = encodeURIComponent(text);
+                    const size = "200x200";
+
+                    
+                    const url = `http://api.qrserver.com/v1/create-qr-code/?data=${encodedText}&size=${size}`;
+
+                    
+                    fetch(url)
+                        .then(response => {
+                            if (response.ok) {
+                                return response.blob();
+                            } else {
+                                throw new Error('Failed to generate QR code');
+                            }
+                        })
+                        .then(blob => {
+                            
+                            const imgUrl = URL.createObjectURL(blob);
+                            document.getElementById('qrImage').classList.remove("hidden");
+                            document.getElementById('qrImage').src = imgUrl;
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                } else {
+                    console.error('QR Code could not be generated');
+                }
+            }
+
+            
+            document.querySelector('button').addEventListener('click', generateQRCode);
+        });
+    </script>
+</body>
+
+</html>
