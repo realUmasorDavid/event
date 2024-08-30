@@ -25,7 +25,11 @@ SECRET_KEY = 'django-insecure-ly4#113q3m4&-kub(fezd5awme-a=#&+qyk$(-&j&0f*tth)a-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://overwhelming-harmony-digicrafts-52e0641e.koyeb.app/']
+ALLOWED_HOSTS = [
+    'overwhelming-harmony-digicrafts-52e0641e.koyeb.app',
+    '*',
+    # Add other allowed hosts if needed
+]
 
 
 # Application definition
